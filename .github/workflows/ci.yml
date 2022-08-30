@@ -1,0 +1,15 @@
+on:
+  push:
+    tags:        
+      - '*'
+
+jobs:
+  trigger-dependencies-bump:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Dispatch remote workflow
+        run: |
+          curl -X POST https://api.github.com/repos/rtorrero/ci-playground/dispatches \
+          -H 'Accept: application/vnd.github.everest-preview+json' \
+          -u ${{ secrets.ACCESS_TOKEN }} \
+          --data '{"event_type": "bump-contracts-version", "client_payload": { "test": "Just some payload" }}'
